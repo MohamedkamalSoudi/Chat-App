@@ -1,4 +1,5 @@
 import 'package:chat_app_1/firebase_options.dart';
+import 'package:chat_app_1/pages/chat_page.dart';
 import 'package:chat_app_1/pages/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,11 +20,12 @@ class ScholarChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        'LoginPage': (context) => LoginPage(),
-        'RegisterPage': (context) => RegisterPage(),
+        LoginPage.id: (context) =>  LoginPage(),
+        RegisterPage.id: (context) => RegisterPage(),
+        ChatPage.id : (context) => ChatPage(),
       },
       debugShowCheckedModeBanner: false,
-      initialRoute: 'LoginPage',
+      initialRoute: LoginPage.id,
     );
   }
 }  
