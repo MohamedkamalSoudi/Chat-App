@@ -17,7 +17,7 @@ import 'pages/login_page.dart';
 class ScholarChat extends StatelessWidget {
   const ScholarChat({super.key});
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  
     return MaterialApp(
       routes: {
         LoginPage.id: (context) =>  LoginPage(),
