@@ -79,6 +79,7 @@ class _RegisterPageState extends State<LoginPage> {
                   height: 10,
                 ),
                 CustomTextField.CustomFormTextField(
+                  obscureText: true,
                   onChanged: (data) {
                     password = data;
                   },
@@ -96,7 +97,7 @@ class _RegisterPageState extends State<LoginPage> {
                       );
                       try {
                         await loginUser();
-                        Navigator.pushNamed(context, ChatPage.id);
+                        Navigator.pushNamed(context, ChatPage.id,arguments:email);
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
                           showSnacBar(context, 'user-not-found');

@@ -8,13 +8,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ChatPage extends StatelessWidget {
   static String id = 'ChatPage';
 
+  final _controller = ScrollController();
+
   CollectionReference messages =
       FirebaseFirestore.instance.collection(kMessagesCollections);
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
+  var email =  ModalRoute.of(context)!.settings.arguments;
     return StreamBuilder<QuerySnapshot>(
-      stream: messages.snapshots(),
+      stream: messages.orderBy(kCreatedAt ,descending: true ).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<Message> messagesList = [];
@@ -44,9 +47,13 @@ class ChatPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: ListView.builder(
+                    reverse: true,
+                    controller: _controller,
                     itemCount: messagesList.length,
                     itemBuilder: (context, index) {
-                      return ChatBuble(message: messagesList[index],);
+                      return messagesList[index].id == email ? ChatBuble(
+                        message: messagesList[index],
+                      ):ChatBubleForFriend(message: messagesList[index]);
                     },
                   ),
                 ),
@@ -57,10 +64,17 @@ class ChatPage extends StatelessWidget {
                     onSubmitted: (data) {
                       messages.add(
                         {
-                          'message': data,
+                          kMessage: data,
+                          kCreatedAt: DateTime.now(),
+                          'id' : email
                         },
                       );
                       controller.clear();
+                      _controller.animateTo(
+                        0,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.easeIn,
+                      );
                     },
                     decoration: InputDecoration(
                       hintText: 'Send Message',
