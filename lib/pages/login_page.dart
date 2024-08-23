@@ -1,6 +1,6 @@
 import 'package:chat_app_1/helper/show_snac_bar.dart';
+import 'package:chat_app_1/pages/blocs/bloc/auth_bloc.dart';
 import 'package:chat_app_1/pages/chat_page.dart';
-import 'package:chat_app_1/pages/cubits/cubit/login_cubit.dart';
 import 'package:chat_app_1/widgets/custom_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginCubit, LoginState>(
+    return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is LoginLoading) {
           isLoading = true;
@@ -31,7 +31,7 @@ class LoginPage extends StatelessWidget {
           isLoading = false;
         }
       },
-      child:ModalProgressHUD(
+      child: ModalProgressHUD(
         inAsyncCall: isLoading,
         child: Scaffold(
           backgroundColor: primaryColor,
@@ -100,8 +100,8 @@ class LoginPage extends StatelessWidget {
                   CustomButton(
                     onTap: () async {
                       if (formKey.currentState!.validate()) {
-                        BlocProvider.of<LoginCubit>(context)
-                            .loginUser(email: email!, password: password!);
+                        BlocProvider.of<AuthBloc>(context).add(
+                            LoginEvent(email: email!, password: password!));
                       } else {}
                     },
                     text: 'Login',
